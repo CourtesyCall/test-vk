@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import * as VKID from "@vkid/sdk";
+
 import {useNavigate} from "react-router";
 const VkPost = ({ accessToken }) => {
 
@@ -41,10 +41,6 @@ const VkPost = ({ accessToken }) => {
 
     }
 
-    useEffect(async () => {
-        console.log('access token - ' + accessToken);
-        const response = await fetch(``)
-    })
 
 
 

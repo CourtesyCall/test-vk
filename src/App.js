@@ -20,7 +20,6 @@ function App() {
         createRoutesFromElements(
             <Route path='/' element={<Layout/>}>
                 <Route index element={<VkAuth setAccessToken={setAccessToken} setUserId={setUserId}/>}/>
-                <Route path='/post' element={<VkPost accessToken={accessToken}/>}/>
                 <Route path='/testpost' element={<TestPost accessToken={accessToken} userId={userId}/>}/>
                 <Route path='/main' element={<Main/>}/>
             </Route>
