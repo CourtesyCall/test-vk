@@ -3,25 +3,25 @@ import axios from "axios";
 import { FaVk } from "react-icons/fa6";
 
 const Auth = () => {
-    const [authUrl, setAuthUrl] = useState("");
-    const [accessToken, setAccessToken] = useState(null);
-
-    const getAuthUrl = async () => {
-        const response = await axios.get("http://localhost:5000/auth/vk");
-        setAuthUrl(response.data.url);
-    };
-
-    const handleAuthCallback = async (code) => {
-        try {
-            const response = await axios.get(
-                `http://localhost:5000/auth/callback?code=${code}`
-            );
-            setAccessToken(response.data.access_token);
-            alert("Authorization successful!");
-        } catch (error) {
-            console.error("Error during authorization:", error);
-        }
-    };
+    // const [authUrl, setAuthUrl] = useState("");
+    // const [accessToken, setAccessToken] = useState(null);
+    //
+    // const getAuthUrl = async () => {
+    //     const response = await axios.get("http://localhost:5000/auth/vk");
+    //     setAuthUrl(response.data.url);
+    // };
+    //
+    // const handleAuthCallback = async (code) => {
+    //     try {
+    //         const response = await axios.get(
+    //             `http://localhost:5000/auth/callback?code=${code}`
+    //         );
+    //         setAccessToken(response.data.access_token);
+    //         alert("Authorization successful!");
+    //     } catch (error) {
+    //         console.error("Error during authorization:", error);
+    //     }
+    // };
 
     return (
 
