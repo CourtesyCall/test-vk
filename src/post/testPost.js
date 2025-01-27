@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 
 
 // const code = 'vk1.a.sUT4u3mQp0LVfB8tlkzkeMmNzLyXruRYJqmeCgMxp9SbVrHS8Mt0k7qrI4NNQ-Xw8kRKko1jQIbaqHwwoX-EEtu6261lEQd39eYZGmwr0oQSovx5EgVn27oS8TembUiUdy2MKtTv9qvirKo20pQz_1NiSGkumFtAqSX72qPMaD04aUCnRD4gGj9VOGvlQN5aHgChXy9Nh33PrQdDhv9bEQ';
 // const groudId = '228635250';
-const TestPost = ({accessToken, userId}) => {
+const TestPost = ({accessToken: propAccessToken, userId: propUserId }) => {
+    const [accessToken, setAccessToken] = useState(propAccessToken || localStorage.getItem("access_token"));
+    const [userId, setUserId] = useState(propUserId || localStorage.getItem("user_id"));
     const [message, setMessage] = useState("");
     const [status, setStatus] = useState(null);
     //
@@ -12,11 +14,29 @@ const TestPost = ({accessToken, userId}) => {
     // const ACCESS_TOKEN = "vk1.a.gclQeiudFoFcEikHkCdx0sfA6qgJCrgEQVGqEeZWKbgdLJfKzVdQgh2Kifo3WLFt8Gxh5xb27MsF13QF1s4GeKeNf5pa7Rqo2ZiI2bgv8A-dib_AO6syPjm_YnPR2SaJXdZjKEmS9dRiY5E8eSm5RZ9cGnFZ8FsuMUR39BKFM6xF8qd-IIDUGy6QyTauoMeqeyg0qIagOLQfyMCphgWu9g";
     const GROUP_ID = "-176833980"; // ID сообщества с отрицательным знаком
     //
+
+    useEffect(() => {
+        if (!accessToken) {
+            const storedAccessToken = localStorage.getItem("access_token");
+            if (storedAccessToken) setAccessToken(storedAccessToken);
+        }
+
+        if (!userId) {
+            const storedUserId = localStorage.getItem("user_id");
+            if (storedUserId) setUserId(storedUserId);
+        }
+    }, [accessToken, userId]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         console.log('token 2 - ' + accessToken)
         console.log('userId 2 - ' + userId)
+
+        if (!accessToken) {
+            setStatus("Ошибка: Access Token отсутствует. Авторизуйтесь заново.");
+            return;
+        }
 
         try {
             const response = await axios.get("https://api.vk.com/method/wall.post", {

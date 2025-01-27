@@ -12,20 +12,7 @@ const VkAuth = ({setAccessToken, setUserId }) => {
     const { setUser } = useContext(UserContext); // Получите setUser из контекста
 
     const navigate = useNavigate();
-    // const onSuccessHandler = async (code,deviceId ) => {
-    //     console.log('code - '+ code)
-    //     console.log('deviceId - '+ deviceId)
-    //
-    //     VKID.Auth.exchangeCode(code, deviceId).then((response)=>{
-    //         console.log("Access Token:", response.access_token);
-    //         setAccessToken(response.access_token);
-    //         navigate("/post"); // Переход на страницу отправки постов
-    //     })
-    // }
 
-    // const onErrorHandler = () =>{
-    //
-    // }
 
     function generateCodeVerifier() {
         const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
@@ -42,27 +29,24 @@ const VkAuth = ({setAccessToken, setUserId }) => {
     console.log("Code Verifier:", codeVerifier);
 
 
+    useEffect(() => {
+        const storedAccessToken = localStorage.getItem("access_token");
+        const storedUserId = localStorage.getItem("user_id");
+
+        if (storedAccessToken && storedUserId) {
+            setAccessToken(storedAccessToken);
+            setUserId(storedUserId);
+            navigate("/testpost"); // Переход на страницу, если токен найден
+        }
+    }, [setAccessToken, setUserId, navigate]);
+
+
 
     useEffect(()=>{
-        // VKID.Config.init({
-        //     app: 52847670, // Идентификатор приложения.
-        //     redirectUrl: 'http://localhost', // Адрес для перехода после авторизации.
-        //     responseMode: VKID.ConfigResponseMode.Callback,
-        //     source: VKID.ConfigSource.LOWCODE,
-        //     state: `dj29fnsadjsd823242dsf`, // Произвольная строка состояния приложения.
-        //     action: {
-        //         name: `qr_auth`,
-        //     },
-        //     codeVerifier: '4564', // Параметр в виде случайной строки. Обеспечивает защиту передаваемых данных.
-        //     scope: 'vkid.personal_info', // Список прав доступа, которые нужны приложению.
-        // });
-
-        console.log(process.env.APP + '- env app')
-        console.log(process.env.REDIRECT_URL + '- redirect')
 
         VKID.Config.init({
             app: 52876878, // Идентификатор приложения.
-            redirectUrl: 'http://localhost', // Адрес для перехода после авторизации.
+            redirectUrl: 'https://test-vk.onrender.com', // Адрес для перехода после авторизации.
             state: 'dj29fnsadjsd823242dsf', // Произвольная строка состояния приложения.
             codeVerifier: codeVerifier, // Параметр в виде случайной строки. Обеспечивает защиту передаваемых данных.
             scope: 'email phone wall', // Список прав доступа, которые нужны приложению.
@@ -89,19 +73,20 @@ const VkAuth = ({setAccessToken, setUserId }) => {
             oneTap.on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, async function (payload) {
                 const code = payload.code;
                 const deviceId = payload.device_id;
-                console.log("payload - " + JSON.stringify(payload))
-
-                console.log('code - ' + code)
-                console.log('deviceId - ' + deviceId)
+                // console.log("payload - " + JSON.stringify(payload))
+                //
+                // console.log('code - ' + code)
+                // console.log('deviceId - ' + deviceId)
 
                 const data = await VKID.Auth.exchangeCode(code, deviceId);
 
-                console.log("data - " + JSON.stringify(data))
+                // console.log("data - " + JSON.stringify(data))
 
                 const user = await VKID.Auth.userInfo(data.access_token);
 
-                console.log("user - " + JSON.stringify(user))
-
+                // console.log("user - " + JSON.stringify(user))
+                localStorage.setItem("access_token", data.access_token);
+                localStorage.setItem("user_id", user.user.user_id);
                 setAccessToken(data.access_token);
                 setUserId(user.user.user_id);
                 if(data.access_token){
