@@ -46,7 +46,7 @@ const VkAuth = ({setAccessToken, setUserId }) => {
 
         VKID.Config.init({
             app: 52876878, // Идентификатор приложения.
-            redirectUrl: 'https://test-vk.onrender.com/', // Адрес для перехода после авторизации.
+            redirectUrl: 'https://test-vk.onrender.com', // Адрес для перехода после авторизации.
             state: 'dj29fnsadjsd823242dsf', // Произвольная строка состояния приложения.
             codeVerifier: codeVerifier, // Параметр в виде случайной строки. Обеспечивает защиту передаваемых данных.
             scope: 'email phone wall', // Список прав доступа, которые нужны приложению.
