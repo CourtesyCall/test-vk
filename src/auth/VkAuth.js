@@ -73,18 +73,18 @@ const VkAuth = ({setAccessToken, setUserId }) => {
             oneTap.on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, async function (payload) {
                 const code = payload.code;
                 const deviceId = payload.device_id;
-                // console.log("payload - " + JSON.stringify(payload))
+                 console.log("payload - " + JSON.stringify(payload))
                 //
-                // console.log('code - ' + code)
-                // console.log('deviceId - ' + deviceId)
+                console.log('code - ' + code)
+                console.log('deviceId - ' + deviceId)
 
                 const data = await VKID.Auth.exchangeCode(code, deviceId);
 
-                // console.log("data - " + JSON.stringify(data))
+                console.log("data - " + JSON.stringify(data))
 
                 const user = await VKID.Auth.userInfo(data.access_token);
 
-                // console.log("user - " + JSON.stringify(user))
+                console.log("user - " + JSON.stringify(user))
                 localStorage.setItem("access_token", data.access_token);
                 localStorage.setItem("user_id", user.user.user_id);
                 setAccessToken(data.access_token);
