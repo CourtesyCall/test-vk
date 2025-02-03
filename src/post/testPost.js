@@ -16,13 +16,17 @@ const TestPost = ({accessToken: propAccessToken, userId: propUserId }) => {
     //
 
     useEffect(() => {
+        console.log(accessToken)
+        console.log(userId)
         if (!accessToken) {
             const storedAccessToken = localStorage.getItem("access_token");
+            console.log(storedAccessToken)
             if (storedAccessToken) setAccessToken(storedAccessToken);
         }
 
         if (!userId) {
             const storedUserId = localStorage.getItem("user_id");
+            console.log(storedUserId)
             if (storedUserId) setUserId(storedUserId);
         }
     }, [accessToken, userId]);
