@@ -71,27 +71,34 @@ const VkAuth = ({setAccessToken, setUserId }) => {
 
 
             oneTap.on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, async function (payload) {
-                const code = payload.code;
-                const deviceId = payload.device_id;
-                 console.log("payload - " + JSON.stringify(payload))
-                //
-                console.log('code - ' + code)
-                console.log('deviceId - ' + deviceId)
+                try {
+                    const code = payload.code;
+                    const deviceId = payload.device_id;
 
-                const data = await VKID.Auth.exchangeCode(code, deviceId, codeVerifier);
+                    console.log("payload - " + JSON.stringify(payload));
+                    console.log('code - ' + code);
+                    console.log('deviceId - ' + deviceId);
 
-                console.log("data - " + JSON.stringify(data))
+                    // Передаём codeVerifier явно
+                    const data = await VKID.Auth.exchangeCode(code, deviceId, codeVerifier);
 
-                const user = await VKID.Auth.userInfo(data.access_token);
+                    console.log("data - " + JSON.stringify(data));
 
-                console.log("user - " + JSON.stringify(user))
-                localStorage.setItem("access_token", data.access_token);
-                localStorage.setItem("user_id", user.user.user_id);
-                setAccessToken(data.access_token);
-                setUserId(user.user.user_id);
-                if(data.access_token){
-                    setUser(user);
-                    navigate("/testpost");} // Переход на страницу отправки постов
+                    const user = await VKID.Auth.userInfo(data.access_token);
+
+                    console.log("user - " + JSON.stringify(user));
+                    localStorage.setItem("access_token", data.access_token);
+                    localStorage.setItem("user_id", user.user.user_id);
+                    setAccessToken(data.access_token);
+                    setUserId(user.user.user_id);
+
+                    if (data.access_token) {
+                        setUser(user);
+                        navigate("/testpost");
+                    }
+                } catch (error) {
+                    console.error("Ошибка авторизации:", error);
+                }// Переход на страницу отправки постов
             });
         }
     },[])
