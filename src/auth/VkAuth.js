@@ -10,7 +10,6 @@ import {UserContext} from "../context";
 const VkAuth = ({setAccessToken, setUserId }) => {
 
     const { setUser } = useContext(UserContext); // Получите setUser из контекста
-
     const navigate = useNavigate();
 
 
@@ -43,12 +42,12 @@ const VkAuth = ({setAccessToken, setUserId }) => {
 
 
     useEffect(()=>{
-
+        const newCodeVerifier = generateCodeVerifier();
         VKID.Config.init({
             app: 52876878, // Идентификатор приложения.
             redirectUrl: 'https://test-vk.onrender.com', // Адрес для перехода после авторизации.
-            state: 'dj29fnsadjsd823242dsf', // Произвольная строка состояния приложения.
-            codeVerifier: codeVerifier, // Параметр в виде случайной строки. Обеспечивает защиту передаваемых данных.
+            state: newCodeVerifier, // Произвольная строка состояния приложения.
+            codeVerifier: 'dj29fnsadjsd823242dsfdsfsdfsdfsdf', // Параметр в виде случайной строки. Обеспечивает защиту передаваемых данных.
             scope: 'email phone wall', // Список прав доступа, которые нужны приложению.
             responseMode: VKID.ConfigResponseMode.Callback,
             action: {
@@ -80,7 +79,7 @@ const VkAuth = ({setAccessToken, setUserId }) => {
                     console.log('deviceId - ' + deviceId);
 
                     // Передаём codeVerifier явно
-                    const data = await VKID.Auth.exchangeCode(code, deviceId, codeVerifier);
+                    const data = await VKID.Auth.exchangeCode(code, deviceId, newCodeVerifier);
 
                     console.log("data - " + JSON.stringify(data));
 
